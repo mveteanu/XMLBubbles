@@ -1,0 +1,56 @@
+<html>
+<body>
+<h1>Codarea datelor de diferite tipuri in XMLBubble</h1>
+
+<form id="form1">
+Prenume: <input id="txt1" type="text" value="Marian"><br>
+Nume: <input id="txt2" type="text" value="Veteanu"><br>
+Poza: <input id="fis1" type="file"><br>
+Sex masculin: <input id="chk1" type="checkbox" checked><br>
+<select id=sel1>
+<option value=1>Inginer</option><option value=2>Medic</option><option value=3>Profesor</option>
+</select>
+<textarea id=txtarea1>VMA soft</textarea><br>
+<input id=fis1 type=file>
+</form>
+<input id="but1" type="button" value="Show XML Bubble">
+
+<script language="VBScript" src="bubbles.vbs"></script>
+<script language="vbscript">
+Sub But1_onclick
+	Dim XMLBubble
+	
+	Set XMLBubble = New clsXMLBubble
+	
+	With XMLBubble
+		'.LoadFromForm form1
+
+		.AddData "dbl", CDbl(2.31)
+		.AddData "sng", CSng(2.31)
+		.AddData "lng", CLng(3)
+		.AddData "int", CInt(3)
+		.AddData "dat", Now()
+		.AddData "str", "VMA soft"
+		.AddData "bol", true
+		.AddData "byt", CByte(0)
+		.AddData "htmlstr", "<table>'VMA' &  ""soft""</table>"
+		.AddData "myarray", Array("VMA soft", Now(), Array(1,2,3.12))
+		.AddData "myvect", Array(true, 1.23, Array(1,2,FileToBytearray("d:\t\s.gif")))
+	
+		msgbox .XML & vbCrLf & vbCrLf &_
+			"dbl = " & VarType(.Field("dbl")) & vbCrLf &_
+			"sng = " & VarType(.Field("sng")) & vbCrLf &_
+			"lng = " & VarType(.Field("lng")) & vbCrLf &_
+			"int = " & VarType(.Field("int")) & vbCrLf &_
+			"dat = " & VarType(.Field("dat")) & vbCrLf &_
+			"str = " & VarType(.Field("str")) & vbCrLf &_
+			"bol = " & VarType(.Field("bol")) & vbCrLf &_
+			"byt = " & VarType(.Field("byt"))
+	End With
+	
+	Set XMLBubble = Nothing
+End Sub
+</script>
+
+</body>
+</html>

@@ -1,0 +1,41 @@
+<html>
+<body>
+<h1>Upload prin XMLBubble</h1>
+
+<form id="form1">
+Prenume: <input id="txt1" type="text" value="Marian"><br>
+Nume: <input id="txt2" type="text" value="Veteanu"><br>
+Poza: <input id="fis1" type="file"><br>
+</form>
+<input id="but1" type="button" value="Start upload"><br>
+<span id=myspan style='border:1px solid red;'></span>
+
+<script language="VBScript" src="bubbles.vbs"></script>
+<script language="vbscript">
+Sub But1_onclick
+	Dim XMLBubble
+	
+	Set XMLBubble = New clsXMLBubble
+	XMLBubble.LoadFromForm form1
+	XMLBubble.bAsynchronous = false
+	XMLBubble.SendTo "./TestXMLBubble2.asp"
+
+	If XMLBubble.bAsynchronous Then						'
+		window.status = ""								' Bucata asta e necesara doar
+		Do Until XMLBubble.readyState = 4				' daca se trimite asincron.
+			window.status = window.status & "."			' Aici se poate incrementa de
+		Loop											' exemplu un progressbar.
+	End If												'
+
+	If XMLBubble.Status = 200 Then 
+		MsgBox XMLBubble.ServerResponse.Text, vbOkOnly+vbInformation
+	Else
+		MsgBox "Eroare transmisie: " & XMLBubble.Status.Text, vbOkOnly+vbCritical
+		myspan.innerHTML  = XMLBubble.ServerResponse.Text
+	End If
+	Set XMLBubble = Nothing
+End Sub
+</script>
+
+</body>
+</html>

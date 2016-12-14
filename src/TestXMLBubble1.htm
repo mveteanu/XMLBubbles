@@ -1,0 +1,28 @@
+<html>
+<body>
+<h1>Download prin XMLBubble</h1>
+
+Salveaza in fisierul: <input id="txt1" type="text" value="D:\T\BlobExtras.xls">
+<input id="but1" type="button" value="Start download">
+
+<script language="VBScript" src="bubbles.vbs"></script>
+<script language="vbscript">
+Sub But1_onclick
+	Dim XMLBubble
+	
+	Set XMLBubble = New clsXMLBubble
+	With XMLBubble
+		.LoadFromURL "./TestXMLBubble1.asp"
+		If .Error.errorCode <> 0 Then
+			msgbox "Erori in pachetul XML :" & .Error.Reason, vbOkOnly+vbCritical
+		Else
+			BytearrayToFile .Field("blob1"), txt1.value
+			MsgBox "Fisierul client a fost salvat cu succes!", vbOkOnly+vbInformation
+		End If
+	End With
+	Set XMLBubble = Nothing
+End Sub
+</script>
+
+</body>
+</html>

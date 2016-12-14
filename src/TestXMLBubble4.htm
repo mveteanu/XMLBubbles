@@ -1,0 +1,166 @@
+<HTML>
+<head>
+<style>
+TABLE, BODY
+{
+	font-family:verdana;
+	font-size:12px;
+	background-color:white;
+}
+TD
+{
+	border-top:1px solid black;
+}
+</style>
+</head>
+<BODY>
+
+<H1>XMLRPC Demo</H1>
+
+<p>Prin <b>XMLRPC</b> se poate apela direct de pe client o functie server si intoarce rezultatul
+acesteia pe client. Orice eventuala eroare generata de functia server, precum si posibilele erori
+de comunicatie client-server sunt prinse si apoi ridicate pe client in vederea tratarii lor.</p>
+<p>Parametrii de intrare si rezultatul intors de functia server poate fi un tip primitiv de date sau
+array de tipuri primitive sau de alte array-uri (imbricare pe oricate niveluri). Tip primitiv
+de date inseamna unul din urmatoarele tipuri: integer, long, single, double, date, string, boolean, byte si 
+array de bytes (de ex. continutul unui fisier sau blob)</p>
+
+<table border=0 cellspacing=0 cellpadding=5 width=100% style='border-bottom:1px solid black;'>
+<tr bgcolor=#f0f0f0>
+<td width=150 valign=center align=center>
+<input type=button value="Call remote" onclick="vbscript:CallRemoteFunction(1)">
+</td>
+<td valign=top align=left>
+Subrutina server: <font color=blue><b>Function Saluta(strName)</b></font><br><br>
+Descriere: Primeste la intrare un string si returneaza un alt string.<br><br>
+Apel client: <font color=red><b>msgbox XMLRPC("./TestXMLBubble4.asp", "Saluta", "Marian")</b></font><br>
+</td>
+</tr>
+
+<tr>
+<td width=150 valign=center align=center>
+<input type=button value="Call remote" onclick="vbscript:CallRemoteFunction(2)">
+</td>
+<td valign=top align=left>
+Subrutina server: <font color=blue><b>Function Saluta2(nume, prenume)</b></font><br><br>
+Descriere: Primeste la intrare 2 string-uri si returneaza un alt string. De pe client la apel se vor da cele 2 string-uri intr-un array. <br><br>
+Apel client: <font color=red><b>msgbox XMLRPC("./TestXMLBubble4.asp", "Saluta2", Array("Marian", "Veteanu"))</b></font><br>
+</td>
+</tr>
+
+<tr bgcolor=#f0f0f0>
+<td width=150 valign=center align=center>
+<input type=button value="Call remote" onclick="vbscript:CallRemoteFunction(3)">
+</td>
+<td valign=top align=left>
+Subrutina server: <font color=blue><b>Function Suma(a,b)</b></font><br><br>
+Descriere: Primeste la intrare 2 numere si returneaza un altul. XMLRPC prezerva tipurile de date.<br><br>
+Apel client: <font color=red><b>msgbox XMLRPC("./TestXMLBubble4.asp", "Suma", Array(2,3))</b></font><br>
+</td>
+</tr>
+
+<tr>
+<td width=150 valign=center align=center>
+<input type=button value="Call remote" onclick="vbscript:CallRemoteFunction(4)">
+</td>
+<td valign=top align=left>
+Subrutina server: <font color=blue><b>Function Suma2(a)</b></font><br><br>
+Descriere: Primeste la intrare un array de numere si returneaza un numar reprezentand suma lor. Este necesara imbricarea array-ului de numere intr-un array cu un singur element de tip array pentru a se evita confuziile.<br><br>
+Apel client: <font color=red><b>msgbox XMLRPC("./TestXMLBubble4.asp", "Suma2", Array(Array(1,2,3)))</b></font><br>
+</td>
+</tr>
+
+<tr bgcolor=#f0f0f0>
+<td width=150 valign=center align=center>
+<input type=button value="Call remote" onclick="vbscript:CallRemoteFunction(5)">
+</td>
+<td valign=top align=left>
+Subrutina server: <font color=blue><b>Function SumaSimpa</b></font><br><br>
+Descriere: Functia returneaza un numar. In cazul in care functiile server nu au parametrii se va specifica Empty.<br><br>
+Apel client: <font color=red><b>msgbox XMLRPC("./TestXMLBubble4.asp", "SumaSimpa", Empty)</b></font><br>
+</td>
+</tr>
+
+<tr>
+<td width=150 valign=center align=center>
+<input type=button value="Call remote" onclick="vbscript:CallRemoteFunction(6)">
+</td>
+<td valign=top align=left>
+Subrutina server: <font color=blue><b>Function ConcatArrays(a,b)</b></font><br><br>
+Descriere: Functia primeste 2 parametrii de tip array si returneaza un rezultat de tip array.<br><br>
+Apel client: <font color=red><b>msgbox Join(XMLRPC("./TestXMLBubble4.asp", "ConcatArrays", Array(Array(1,2),Array(3,4))) , ",")</b></font><br>
+</td>
+</tr>
+
+<tr bgcolor=#f0f0f0>
+<td width=150 valign=center align=center>
+<input type=button value="Call remote" onclick="vbscript:CallRemoteFunction(7)">
+</td>
+<td valign=top align=left>
+Subrutina server: <font color=blue><b>Function SaveToFileOnServer(arBytearray, strFilename)</b></font><br><br>
+Descriere: Functia primeste 2 parametrii: un array de bytes (continul unui fisier) si un string. Functia server va salva pe server acest bytearray intr-un fisier cu numele specificat. Practic functia realizeaza un UPLOAD!<br><br>
+Apel client: <font color=red><b>Call XMLRPC("./TestXMLBubble4.asp", "SaveToFileOnServer", Array(FileToBytearray("d:\t\s2.gif"), "d:\t\uploaded.bin"))</b></font><br>
+</td>
+</tr>
+
+<tr>
+<td width=150 valign=center align=center>
+<input type=button value="Call remote" onclick="vbscript:CallRemoteFunction(8)">
+</td>
+<td valign=top align=left>
+Subrutina server: <font color=blue><b>Function SaveToFileOnClient(BlobID)</b></font><br><br>
+Descriere: Functia primeste un parametru reprezentand un ID dintr-o tabela de unde va extrage un blob pe care-l va returna. Acest blob este salvat pe client intr-un fisier. Practic functia realizeaza un DOWNLOAD!<br><br>
+Apel client: <font color=red><b>BytearrayToFile XMLRPC("./TestXMLBubble4.asp", "SaveToFileOnClient", 1), "d:\t\blob.xls"</b></font><br>
+</td>
+</tr>
+
+<tr bgcolor=#f0f0f0>
+<td width=150 valign=center align=center>
+<input type=button value="Call remote" onclick="vbscript:CallRemoteFunction(9)">
+</td>
+<td valign=top align=left>
+Subrutina server: <font color=blue><b>Function NullReturn</b></font><br><br>
+Descriere: Aceasta functie intoarce un tip de data nerecunoscut de XMLRPC si ca urmare se va ridica pe client o eroare.<br><br>
+Apel client: <font color=red><b>msgbox XMLRPC("./TestXMLBubble4.asp", "NullReturn", Empty)</b></font><br>
+</td>
+</tr>
+
+<tr>
+<td width=150 valign=center align=center>
+<input type=button value="Call remote" onclick="vbscript:CallRemoteFunction(10)">
+</td>
+<td valign=top align=left>
+Subrutina server: <font color=blue><b>Sub Subrutina</b></font><br><br>
+Descriere: Rutina de pe server este o subrutina si nu o functie, ceea ce va ridica pe client o eroare in vederea tratarii acesteia.<br><br>
+Apel client: <font color=red><b>msgbox XMLRPC("./TestXMLBubble4.asp", "Subrutina", Empty)</b></font><br>
+</td>
+</tr>
+
+</table>
+
+
+<script language="VBScript" src="bubbles.vbs"></script>
+<script language=vbscript>
+Sub CallRemoteFunction(whatfn)
+	On Error Resume Next
+	Select Case whatfn
+		Case 1 msgbox XMLRPC("./TestXMLBubble4.asp", "Saluta", "Marian")
+		Case 2 msgbox XMLRPC("./TestXMLBubble4.asp", "Saluta2", Array("Marian", "Veteanu"))
+		Case 3 msgbox XMLRPC("./TestXMLBubble4.asp", "Suma", Array(2,3))
+		Case 4 msgbox XMLRPC("./TestXMLBubble4.asp", "Suma2", Array(Array(1,2,3)))
+		Case 5 msgbox XMLRPC("./TestXMLBubble4.asp", "SumaSimpa", Empty)
+		Case 6 msgbox Join(XMLRPC("./TestXMLBubble4.asp", "ConcatArrays", Array(Array(1,2),Array(3,4))) , ",")
+		Case 7 Call XMLRPC("./TestXMLBubble4.asp", "SaveToFileOnServer", Array(FileToBytearray("d:\t\s2.gif"), "d:\t\uploaded.bin"))
+		Case 8 BytearrayToFile XMLRPC("./TestXMLBubble4.asp", "SaveToFileOnClient", 1), "d:\t\blob.xls"
+		Case 9 msgbox XMLRPC("./TestXMLBubble4.asp", "NullReturn", Empty)
+		Case 10 msgbox XMLRPC("./TestXMLBubble4.asp", "Subrutina", Empty)
+	End Select
+	If Err.number <> 0 Then
+		Msgbox "Error (" & Err.number & "): " & Err.Description, vbOkOnly+vbCritical
+		Err.Clear 
+	End If
+End Sub
+</script>
+
+</BODY>
+</HTML>
